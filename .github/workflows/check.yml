@@ -1,16 +1,34 @@
-name: Check JavaScript
+name: Validate Renault Alpine dashboard card
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  syntax:
+  javascript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate dashboard card
-        run: node --check renault-alpine-card.js
+      - name: Check dashboard card module syntax
+        run: node --check dist/renault-alpine-card.js
+      - name: Check HACS manifest and package contents
+        run: |
+          python3 -m json.tool hacs.json > /dev/null
+          test -f dist/renault-alpine-card.js
+          test -f dist/alpine-hero.webp
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HACS Dashboard repository
+        uses: hacs/action@main
+        with:
+          category: plugin

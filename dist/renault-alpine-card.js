@@ -1,5 +1,5 @@
 /* Renault Alpine • Home Assistant custom Lovelace card
- * v1.0.0 - original design, graphite palette and compact spacing.
+ * v1.1.0 - HACS dashboard distribution; original design, graphite palette and compact spacing.
  * No external dependencies, no Renault credentials, no direct Renault API calls.
  * All action commands route through Home Assistant's hass.callService().
  */
@@ -12,7 +12,7 @@
     title: 'Renault Alpine',
     entity_prefix: 'tuin_alpine',
     location_suffix: 'Tuin',
-    image: '/local/renault-alpine/alpine-hero.webp',
+    image: new URL('./alpine-hero.webp', import.meta.url).href,
     colors: {battery: '#7fea9f', highlight: '#83baff', statusIcons: '#c5e3fd'},
     icons: {weight: 'regular', time: 'timer', flash: 'headlights'},
     options: {highlightFlash: true, showFlashEntity: true, compact: true, confirmHorn: true},
@@ -356,5 +356,5 @@
   if(!customElements.get('renault-alpine-card-editor'))customElements.define('renault-alpine-card-editor',RenaultAlpineCardEditor);
   window.customCards=window.customCards||[];
   window.customCards.push({type:TAG,name:'Renault Alpine',description:'Renault Alpine live vehicle card (graphite, compact, configurable entities)',preview:true});
-  console.info('%cRENAULT ALPINE CARD%c v1.0.0 loaded','color:#7fea9f;font-weight:bold','color:inherit');
+  console.info('%cRENAULT ALPINE CARD%c v1.1.0 loaded','color:#7fea9f;font-weight:bold','color:inherit');
 })();

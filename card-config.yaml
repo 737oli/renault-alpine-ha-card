@@ -2,7 +2,6 @@ type: custom:renault-alpine-card
 title: Renault Alpine
 entity_prefix: tuin_alpine
 location_suffix: Tuin
-image: /local/renault-alpine/alpine-hero.webp
 colors:
   battery: '#7fea9f'
   highlight: '#83baff'

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Renault Alpine HA card — sandbox preview</title>
 <style>body{margin:0;color:#f4f8ff;background:radial-gradient(ellipse at top,#373d47,#181d26);font:14px system-ui,sans-serif}main{max-width:990px;margin:0 auto;padding:20px}header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}h1{font-size:19px;flex:1;margin:0}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px}button,select{padding:8px 12px;background:#293745;color:#fff;border:1px solid #667d98;border-radius:9px}p{color:#bfcddd}#log{min-height:45px;background:#18232c;padding:10px 12px;border-radius:10px}</style>
-<script src="./renault-alpine-card.js" defer></script>
+<script type="module" src="./dist/renault-alpine-card.js"></script>
 <script defer>
 window.addEventListener('DOMContentLoaded',()=>{
   const prefix='tuin_alpine';
@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('card').hass=hass;
   }
   const card=document.getElementById('card');
-  card.setConfig({title:'Renault Alpine',entity_prefix:'tuin_alpine',location_suffix:'Tuin',image:'./alpine-hero.webp',colors:{battery:'#7fea9f',highlight:'#83baff',statusIcons:'#c5e3fd'},icons:{weight:'regular',time:'timer',flash:'headlights'},options:{highlightFlash:true,showFlashEntity:true,compact:true,confirmHorn:false},entities:{flashLights:'button.tuin_alpine_flash_lights'}});
+  card.setConfig({title:'Renault Alpine',entity_prefix:'tuin_alpine',location_suffix:'Tuin',colors:{battery:'#7fea9f',highlight:'#83baff',statusIcons:'#c5e3fd'},icons:{weight:'regular',time:'timer',flash:'headlights'},options:{highlightFlash:true,showFlashEntity:true,compact:true,confirmHorn:false},entities:{flashLights:'button.tuin_alpine_flash_lights'}});
   document.getElementById('scenario').addEventListener('change',e=>{
     if(e.target.value==='charging')Object.assign(sample,{battery:62,battery_autonomy:248,charging:'on',charge_state:'charging',plug:'on',plug_state:'plugged_in',charging_remaining_time:125});
     if(e.target.value==='parked')Object.assign(sample,{battery:78,battery_autonomy:312,charging:'off',charge_state:'not_charging',plug:'off',plug_state:'unplugged',charging_remaining_time:84});
