@@ -2,6 +2,8 @@
 
 **A premium vehicle dashboard for Home Assistant.** Monitor your Renault's essential information and access supported remote functions from one elegant, responsive card.
 
+**Powered by Home Assistant's official [Renault integration](https://www.home-assistant.io/integrations/renault/).** The card displays data from the Renault entities already available in Home Assistant and sends supported vehicle commands through that integration. It does not connect to Renault directly or replace the Renault integration. Set up the Renault integration in **Settings → Devices & services** before adding the card.
+
 ![Renault Alpine Vehicle Card preview](docs/preview-desktop.png)
 
 Designed with a graphite finish, clear status indicators, and a layout that feels at home on both desktop and mobile dashboards.
