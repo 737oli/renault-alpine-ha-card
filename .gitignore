@@ -1,0 +1,14 @@
+# Local/private settings and backups
+.env
+.env.*
+!.env.example
+secrets.yaml
+*.local.yaml
+*.bak
+*.backup
+# Editor and OS artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+node_modules/
