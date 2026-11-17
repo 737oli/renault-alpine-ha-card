@@ -39,6 +39,8 @@ No changes to `configuration.yaml` are needed. **Do not separately add a `/local
 
 ### Distribution and artwork
 
+The Renault emblem in the top-right is vector-traced directly from the user-supplied logo, drawn white inside the card, and does not need a separate image file. Primary text is explicitly white even under light Home Assistant themes. Flash lights uses the same button style as the other actions without an entity subtitle.
+
 `hacs.json` declares `filename: renault-alpine-card.js`. HACS finds the release-ready files together in `dist/` and installs both:
 
 - `dist/renault-alpine-card.js` — dependency-free ES module containing the JavaScript, HTML and CSS.
@@ -56,7 +58,7 @@ Copy both files from `dist/` into Home Assistant at `/config/www/renault-alpine/
 Add a resource in **Settings → Dashboards → Resources**:
 
 ```text
-/local/renault-alpine/renault-alpine-card.js?v=1.1.0
+/local/renault-alpine/renault-alpine-card.js?v=1.1.1
 ```
 
 Choose **JavaScript module**, then add the same `custom:renault-alpine-card` dashboard card. If the `www` directory was newly created, Home Assistant might require a restart before serving `/local/` files. The UI editor handles all card settings; `configuration.yaml` does not need changing.
@@ -77,8 +79,6 @@ icons:
   time: timer
   flash: headlights
 options:
-  highlightFlash: true
-  showFlashEntity: true
   compact: true
   confirmHorn: true
 entities:
@@ -98,7 +98,7 @@ The only entity ID directly confirmed by the original project is `button.tuin_al
 
 ## Updating and development
 
-HACS uses GitHub commit versions until you publish a GitHub release. **No release is required to install a custom repository.** A versioned release can be published later through GitHub Releases, using a tag such as `v1.1.0` (make sure it contains the `dist` files). HACS checks for updates and refreshes the resource version after installation.
+HACS uses GitHub commit versions until you publish a GitHub release. **No release is required to install a custom repository.** A versioned release can be published later through GitHub Releases, using a tag such as `v1.1.1` (make sure it contains the `dist` files). HACS checks for updates and refreshes the resource version after installation.
 
 The package files are in `dist/`; changes to the dashboard JavaScript must be made there. Open [`preview.html`](preview.html) locally using a development web server to simulate Home Assistant sensor states and actions without touching your car:
 

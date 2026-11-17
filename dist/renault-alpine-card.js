@@ -1,5 +1,5 @@
 /* Renault Alpine • Home Assistant custom Lovelace card
- * v1.1.0 - HACS dashboard distribution; original design, graphite palette and compact spacing.
+ * v1.1.1 - White typography, standard action buttons and Renault emblem traced from supplied artwork.
  * No external dependencies, no Renault credentials, no direct Renault API calls.
  * All action commands route through Home Assistant's hass.callService().
  */
@@ -15,7 +15,7 @@
     image: new URL('./alpine-hero.webp', import.meta.url).href,
     colors: {battery: '#7fea9f', highlight: '#83baff', statusIcons: '#c5e3fd'},
     icons: {weight: 'regular', time: 'timer', flash: 'headlights'},
-    options: {highlightFlash: true, showFlashEntity: true, compact: true, confirmHorn: true},
+    options: {compact: true, confirmHorn: true},
     // Optional Renault vehicle identifier for official ac_cancel/ac_start service fallback.
     renault_vehicle_id: '',
     entities: {flashLights: 'button.tuin_alpine_flash_lights'}
@@ -65,7 +65,7 @@
     .shell::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(145deg,rgba(29,39,53,.25),transparent 60%,rgba(0,0,0,.22))}
     .head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:3px 8px 0;min-height:63px}
     h2{margin:0;font-size:clamp(24px,3.7cqw,38px);letter-spacing:-.035em;line-height:1.2;font-weight:780}
-    .logo{width:53px;height:59px;flex:none;stroke:#fff;stroke-width:5.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .logo{width:53px;height:59px;flex:none;fill:#f8fbff;stroke:none}
     .scene{position:relative;height:clamp(185px,34cqw,322px);display:flex;align-items:center;justify-content:center;margin:-2px -12px 0}
     .car{width:min(100%,900px);max-height:110%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse 63% 74% at 50% 51%,#000 50%,transparent 100%);mask-image:radial-gradient(ellipse 63% 74% at 50% 51%,#000 50%,transparent 100%);pointer-events:none;user-select:none}
     .lamp{position:absolute;pointer-events:none;inset:0;opacity:0;background:radial-gradient(ellipse 6% 4% at 77% 47%,rgba(243,253,255,.9),transparent 86%),radial-gradient(ellipse 18% 6% at 77% 47%,rgba(152,217,255,.52),transparent 100%);mix-blend-mode:screen}
@@ -88,16 +88,18 @@
     .action-wrap{min-width:0;display:flex;flex-direction:column;gap:6px;align-items:stretch}
     .action{width:100%;min-height:91px;border-radius:16px;border:1px solid rgba(192,210,235,.35);background:linear-gradient(140deg,#465364,var(--g-action));box-shadow:inset 0 1px #fff1,0 4px 10px #0002;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;padding:10px 8px;font-size:clamp(12px,1.74cqw,18px);font-weight:730;line-height:1.15;text-align:center;transition:transform .17s,filter .17s,border-color .17s}
     .action:hover:not(:disabled){transform:translateY(-2px);border-color:var(--g-blue);filter:brightness(1.1)}.action:active:not(:disabled){transform:translateY(1px)}.action:disabled{cursor:not-allowed;opacity:.45;filter:saturate(.65)}
-    .action .ico{width:31px;height:31px}.action.ac .ico{color:var(--g-cyan)}.action.featured{border:2px solid var(--g-blue);background:linear-gradient(138deg,#264e77,#1c3b61);box-shadow:0 0 16px rgba(131,186,255,.16),inset 0 1px #fff2}.action.pending{animation:pulse .55s ease-in-out infinite alternate}.action.active{border-color:var(--g-green);background:linear-gradient(140deg,#245442,#174133)}@keyframes pulse{to{filter:brightness(1.35)}}
-    .entity-caption{min-width:0;text-align:center;color:#abb7ca;font-size:clamp(10px,1.25cqw,12px);overflow-wrap:anywhere;line-height:1.3}
+    .action .ico{width:31px;height:31px}.action.ac .ico{color:var(--g-cyan)}.action.pending{animation:pulse .55s ease-in-out infinite alternate}.action.active{border-color:var(--g-green);background:linear-gradient(140deg,#245442,#174133)}@keyframes pulse{to{filter:brightness(1.35)}}
     .footer{border-top:1px solid rgba(194,212,233,.28);margin:25px 5px 0;padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
     .updated{display:flex;align-items:center;gap:8px;color:#cbd4e1;font-size:clamp(11px,1.6cqw,16px)}.updated .ico{width:23px;height:23px}
     .location{max-width:55%;background:linear-gradient(110deg,rgba(31,83,69,.48),rgba(39,51,70,.87));border:1px solid rgba(182,201,222,.22);border-radius:40px;min-height:37px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-size:clamp(11px,1.58cqw,16px);white-space:nowrap}.location .ico{width:19px;height:19px;color:#8ced94;fill:rgba(140,237,148,.1)}.location strong{overflow:hidden;text-overflow:ellipsis}.location .bar{height:17px;border-left:1px solid #bac6d1a6}.location .suffix{color:#c1ccdb}
     .notice{display:none;margin:10px 5px 0;color:#d5e0ef;font-size:12px;line-height:1.45;border-radius:9px;padding:9px;background:#293847;border:1px solid #52647e}.notice.show{display:block}.notice.error{background:#472927;border-color:#ca8277}
     .missing{font-size:12px;display:none;margin:10px 3px 0;color:#aebdd0}.missing.show{display:block}
+    /* Home Assistant themes must not recolor foreground elements black. */
+    ha-card.shell{color:#f8fbff !important;--primary-text-color:#f8fbff;--secondary-text-color:#d6dfeb}
+    .head h2,.metric .val,.tile-value,.actions h3,button.action,button.location,button.location strong{color:#f8fbff !important}
     :host([compact]) .shell{padding:18px 15px 16px;border-radius:24px}:host([compact]) .scene{height:clamp(164px,29cqw,280px)}:host([compact]) .head{min-height:54px}:host([compact]) .metrics{min-height:110px}:host([compact]) .tile{min-height:107px}:host([compact]) .statuses{margin-top:13px}:host([compact]) .actions{margin-top:19px}:host([compact]) .action{min-height:84px}:host([compact]) .footer{margin-top:18px}
     @container (max-width:710px){.metric{flex-direction:column;text-align:center;gap:4px;padding:10px 6px}.metric .ico{width:26px;height:26px}.metric .name{margin-bottom:3px}.battery{gap:9px;padding:12px}.battery-main{gap:7px}.battery .ico{width:33px;height:33px}.statuses{gap:8px}.tile{padding:11px 10px}.tile .ico{width:28px;height:28px}.actions-grid{gap:8px}.action{padding:8px 5px}.action .ico{width:27px;height:27px}.footer{margin-top:16px}}
-    @container (max-width:510px){.shell{border-radius:20px;padding:16px 10px}.head{min-height:43px}.logo{width:36px;height:44px}.scene{height:clamp(125px,39cqw,210px);margin:0 -10px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));min-height:auto}.metric{min-height:86px;flex-direction:row;text-align:left;justify-content:center;padding:11px 6px}.metric+.metric::before{height:64%;top:18%}.metric:nth-child(3)::before{display:none}.metric:nth-child(n+3){border-top:1px solid var(--g-border)}.battery{padding:11px 13px}.battery-main{justify-content:center}.battery .val{font-size:23px}.battery .ico{width:32px;height:32px}.metric .val{font-size:17px}.metric .status{font-size:12px}.metric .name{font-size:11px}.statuses{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{min-height:95px;padding:10px 13px}.tile .ico{width:25px;height:25px;margin:0}.tile-label{font-size:12px}.tile-value{font-size:18px}.actions{margin-top:17px}.actions h3{font-size:18px}.actions-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.action{min-height:75px;font-size:14px}.action .ico{width:25px;height:25px}.entity-caption{font-size:10px}.footer{margin:16px 2px 0}.updated{font-size:11px}.location{gap:4px;padding:5px 7px;font-size:11px}.location .ico{width:15px;height:15px}.location .suffix{display:none}.location .bar{display:none}}
+    @container (max-width:510px){.shell{border-radius:20px;padding:16px 10px}.head{min-height:43px}.logo{width:36px;height:44px}.scene{height:clamp(125px,39cqw,210px);margin:0 -10px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));min-height:auto}.metric{min-height:86px;flex-direction:row;text-align:left;justify-content:center;padding:11px 6px}.metric+.metric::before{height:64%;top:18%}.metric:nth-child(3)::before{display:none}.metric:nth-child(n+3){border-top:1px solid var(--g-border)}.battery{padding:11px 13px}.battery-main{justify-content:center}.battery .val{font-size:23px}.battery .ico{width:32px;height:32px}.metric .val{font-size:17px}.metric .status{font-size:12px}.metric .name{font-size:11px}.statuses{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{min-height:95px;padding:10px 13px}.tile .ico{width:25px;height:25px;margin:0}.tile-label{font-size:12px}.tile-value{font-size:18px}.actions{margin-top:17px}.actions h3{font-size:18px}.actions-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.action{min-height:75px;font-size:14px}.action .ico{width:25px;height:25px}.footer{margin:16px 2px 0}.updated{font-size:11px}.location{gap:4px;padding:5px 7px;font-size:11px}.location .ico{width:15px;height:15px}.location .suffix{display:none}.location .bar{display:none}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
   `;
   function icon(name, cssClass='') { return `<svg class="ico ${cssClass}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]||ICONS.clock}</svg>`; }
@@ -157,7 +159,7 @@
       const c=this._config, colors=c.colors, opt=c.options, i=c.icons;
       const optionsStyle=`--g-green:${hex(colors.battery,DEFAULTS.colors.battery)};--g-blue:${hex(colors.highlight,DEFAULTS.colors.highlight)};--g-cyan:${hex(colors.statusIcons,DEFAULTS.colors.statusIcons)};--g-weight:${({thin:'1.25',regular:'1.85',bold:'2.45'}[i.weight]||'1.85')};`;
       this.shadowRoot.innerHTML=`<style>${style}</style><ha-card class="shell" style="${optionsStyle}">
-        <div class="head"><h2>${esc(c.title)}</h2><svg class="logo" viewBox="0 0 76 104" role="img" aria-label="Renault emblem"><path d="M38 5 70 52 38 99 6 52 38 5Z"/><path d="M38 5 22 52l16 47M38 5l16 47-16 47M22 52l16-21 16 21-16 21-16-21"/></svg></div>
+        <div class="head"><h2>${esc(c.title)}</h2><svg class="logo" viewBox="0 0 954 1255" role="img" aria-label="Renault emblem"><path d="M524 0 190 627 405 1029 451 939 285 625 571 90 858 626 524 1254 618 1254 952 625 618 0Z"/><path d="M334 0 0 627 333 1253 427 1254 761 625 548 225 500 314 668 627 381 1164 94 628 428 1Z"/></svg></div>
         <div class="scene" id="scene"><img class="car" src="${esc(c.image)}" alt="Black Renault vehicle" draggable="false"><span class="lamp"></span><span class="horn-wave"></span><span class="horn-wave last"></span></div>
         <div class="metrics" aria-label="Battery and charging status">
           <div class="metric battery"><div class="battery-main">${icon('battery')}<div><span class="name">Battery</span><strong class="val" id="battery">—</strong></div></div><div class="batterybar" role="progressbar" aria-label="Battery" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="battery-progress"><span id="battery-fill"></span></div></div>
@@ -174,7 +176,7 @@
         <div class="actions"><h3>Quick actions</h3><div class="actions-grid">
           <div class="action-wrap"><button class="action ac" data-action="ac" id="ac-button">${icon('snowflake')}<span id="ac-label">Start A/C</span></button></div>
           <div class="action-wrap"><button class="action" data-action="charge" id="charge-button">${icon('bolt')}<span id="charge-label">Start charge</span></button></div>
-          <div class="action-wrap"><button class="action ${opt.highlightFlash?'featured':''}" data-action="flash" id="flash-button">${icon(i.flash==='sparkles'?'sparkles':'headlights')}<span>Flash lights</span></button>${opt.showFlashEntity?`<span class="entity-caption" id="flash-entity">${esc(this._entityId('flashLights'))}</span>`:''}</div>
+          <div class="action-wrap"><button class="action" data-action="flash" id="flash-button">${icon(i.flash==='sparkles'?'sparkles':'headlights')}<span>Flash lights</span></button></div>
           <div class="action-wrap"><button class="action" data-action="horn" id="horn-button">${icon('horn')}<span>Sound horn</span></button></div>
         </div></div>
         <footer class="footer"><div class="updated">${icon('refresh')}<span id="updated">Waiting for data</span></div><button class="location" id="location-button" type="button">${icon('pin')}<strong id="location">Location unavailable</strong><span class="bar"></span><span class="suffix">${esc(c.location_suffix)}</span></button></footer>
@@ -337,7 +339,7 @@
         <label class="field"><span>Icon weight</span><select data-path="icons.weight">${['thin','regular','bold'].map(v=>`<option value="${v}" ${c.icons.weight===v?'selected':''}>${v}</option>`).join('')}</select></label>
         <label class="field"><span>Time icon</span><select data-path="icons.time">${['timer','clock'].map(v=>`<option value="${v}" ${c.icons.time===v?'selected':''}>${v}</option>`).join('')}</select></label>
         <label class="field"><span>Flash icon</span><select data-path="icons.flash">${['headlights','sparkles'].map(v=>`<option value="${v}" ${c.icons.flash===v?'selected':''}>${v}</option>`).join('')}</select></label>
-        ${[['highlightFlash','Highlight flash button'],['showFlashEntity','Show flash entity ID'],['compact','Compact spacing'],['confirmHorn','Confirm real horn action']].map(([k,label])=>`<label class="check"><input type="checkbox" data-path="options.${k}" ${c.options[k]?'checked':''}><span>${label}</span></label>`).join('')}
+        ${[['compact','Compact spacing'],['confirmHorn','Confirm real horn action']].map(([k,label])=>`<label class="check"><input type="checkbox" data-path="options.${k}" ${c.options[k]?'checked':''}><span>${label}</span></label>`).join('')}
       </section><section class="group"><details><summary>Entity mapping (expand to verify)</summary><p class="hint">Leaving an override empty uses the automatic prefix-based suggestion. Use the exact entity IDs found under Settings → Devices & services → Renault.</p>
         ${entities.map(([key,label])=>{const spec=DEFAULT_SUFFIXES[key], guess=spec?`${spec[0]}.${c.entity_prefix||'tuin_alpine'}_${spec[1][0]}`:'';return `<label class="field"><span>${label}</span><input data-path="entities.${key}" placeholder="${esc(guess)}" value="${esc(c.entities[key]??'')}"></label>`;}).join('')}
       </details></section>`;
@@ -356,5 +358,5 @@
   if(!customElements.get('renault-alpine-card-editor'))customElements.define('renault-alpine-card-editor',RenaultAlpineCardEditor);
   window.customCards=window.customCards||[];
   window.customCards.push({type:TAG,name:'Renault Alpine',description:'Renault Alpine live vehicle card (graphite, compact, configurable entities)',preview:true});
-  console.info('%cRENAULT ALPINE CARD%c v1.1.0 loaded','color:#7fea9f;font-weight:bold','color:inherit');
+  console.info('%cRENAULT ALPINE CARD%c v1.1.1 loaded','color:#7fea9f;font-weight:bold','color:inherit');
 })();

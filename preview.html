@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('card').hass=hass;
   }
   const card=document.getElementById('card');
-  card.setConfig({title:'Renault Alpine',entity_prefix:'tuin_alpine',location_suffix:'Tuin',colors:{battery:'#7fea9f',highlight:'#83baff',statusIcons:'#c5e3fd'},icons:{weight:'regular',time:'timer',flash:'headlights'},options:{highlightFlash:true,showFlashEntity:true,compact:true,confirmHorn:false},entities:{flashLights:'button.tuin_alpine_flash_lights'}});
+  card.setConfig({title:'Renault Alpine',entity_prefix:'tuin_alpine',location_suffix:'Tuin',colors:{battery:'#7fea9f',highlight:'#83baff',statusIcons:'#c5e3fd'},icons:{weight:'regular',time:'timer',flash:'headlights'},options:{compact:true,confirmHorn:false},entities:{flashLights:'button.tuin_alpine_flash_lights'}});
   document.getElementById('scenario').addEventListener('change',e=>{
     if(e.target.value==='charging')Object.assign(sample,{battery:62,battery_autonomy:248,charging:'on',charge_state:'charging',plug:'on',plug_state:'plugged_in',charging_remaining_time:125});
     if(e.target.value==='parked')Object.assign(sample,{battery:78,battery_autonomy:312,charging:'off',charge_state:'not_charging',plug:'off',plug_state:'unplugged',charging_remaining_time:84});

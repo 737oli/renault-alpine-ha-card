@@ -11,8 +11,6 @@ icons:
   time: timer
   flash: headlights
 options:
-  highlightFlash: true
-  showFlashEntity: true
   compact: true
   confirmHorn: true
 entities:
