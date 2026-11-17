@@ -1,0 +1,28 @@
+type: custom:renault-alpine-card
+title: Renault Alpine
+entity_prefix: tuin_alpine
+location_suffix: Tuin
+image: /local/renault-alpine/alpine-hero.webp
+colors:
+  battery: '#7fea9f'
+  highlight: '#83baff'
+  statusIcons: '#c5e3fd'
+icons:
+  weight: regular
+  time: timer
+  flash: headlights
+options:
+  highlightFlash: true
+  showFlashEntity: true
+  compact: true
+  confirmHorn: true
+entities:
+  flashLights: button.tuin_alpine_flash_lights
+# The card checks these possible entity names automatically from the prefix.
+# If the car has different IDs, use the visual editor or override them here:
+# entities:
+#   battery: sensor.YOUR_ACTUAL_ENTITY
+#   range: sensor.YOUR_ACTUAL_ENTITY
+#   timeRemaining: sensor.YOUR_ACTUAL_ENTITY
+#   flashLights: button.tuin_alpine_flash_lights
+# Optional: renault_vehicle_id: THE_ACTUAL_VEHICLE_ID
