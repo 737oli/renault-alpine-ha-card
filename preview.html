@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Renault Alpine HA card — sandbox preview</title>
+<style>body{margin:0;color:#f4f8ff;background:radial-gradient(ellipse at top,#373d47,#181d26);font:14px system-ui,sans-serif}main{max-width:990px;margin:0 auto;padding:20px}header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}h1{font-size:19px;flex:1;margin:0}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px}button,select{padding:8px 12px;background:#293745;color:#fff;border:1px solid #667d98;border-radius:9px}p{color:#bfcddd}#log{min-height:45px;background:#18232c;padding:10px 12px;border-radius:10px}</style>
+<script src="./renault-alpine-card.js" defer></script>
+<script defer>
+window.addEventListener('DOMContentLoaded',()=>{
+  const prefix='tuin_alpine';
+  const state=(id,s,unit)=>({entity_id:id,state:String(s),attributes:unit?{unit_of_measurement:unit}:{},last_updated:new Date(Date.now()-120000).toISOString()});
+  const sample = {
+    battery:78,battery_autonomy:312,charge_state:'not_charging',plug_state:'unplugged',charging:'off',plug:'off',lock:'off',hvac:'off',charging_remaining_time:84,mileage:18426,location:'home'
+  };
+  const hass={states:{},services:{button:{press:{}},renault:{ac_cancel:{},ac_start:{},charge_start:{}}},callService:async(domain,service,opts)=>{
+    document.getElementById('log').textContent=`Issued: ${domain}.${service} ${JSON.stringify(opts)}`;
+    const entity=opts.entity_id||'';
+    if(entity.endsWith('_start_charge')) {sample.charging='on';sample.charge_state='charging';sample.plug='on';sample.plug_state='plugged_in'}
+    if(entity.endsWith('_stop_charge')) {sample.charging='off';sample.charge_state='not_charging'}
+    if(entity.endsWith('_start_air_conditioner')) sample.hvac='on';
+    sync();await new Promise(r=>setTimeout(r,130));
+  }};
+  function sync(){
+    for(const [key,v] of Object.entries(sample)){
+      const domain=['charging','plug','lock','hvac'].includes(key)?'binary_sensor':key==='location'?'device_tracker':'sensor';
+      const unit=key==='charging_remaining_time'?'min':key==='mileage'||key==='battery_autonomy'?'km':key==='battery'?'%':null;
+      hass.states[`${domain}.${prefix}_${key}`]=state(`${domain}.${prefix}_${key}`,v,unit);
+    }
+    for(const key of ['flash_lights','start_charge','stop_charge','start_air_conditioner','sound_horn'])hass.states[`button.${prefix}_${key}`]=state(`button.${prefix}_${key}`,'unknown');
+    document.getElementById('card').hass=hass;
+  }
+  const card=document.getElementById('card');
+  card.setConfig({title:'Renault Alpine',entity_prefix:'tuin_alpine',location_suffix:'Tuin',image:'./alpine-hero.webp',colors:{battery:'#7fea9f',highlight:'#83baff',statusIcons:'#c5e3fd'},icons:{weight:'regular',time:'timer',flash:'headlights'},options:{highlightFlash:true,showFlashEntity:true,compact:true,confirmHorn:false},entities:{flashLights:'button.tuin_alpine_flash_lights'}});
+  document.getElementById('scenario').addEventListener('change',e=>{
+    if(e.target.value==='charging')Object.assign(sample,{battery:62,battery_autonomy:248,charging:'on',charge_state:'charging',plug:'on',plug_state:'plugged_in',charging_remaining_time:125});
+    if(e.target.value==='parked')Object.assign(sample,{battery:78,battery_autonomy:312,charging:'off',charge_state:'not_charging',plug:'off',plug_state:'unplugged',charging_remaining_time:84});
+    if(e.target.value==='ready')Object.assign(sample,{battery:95,battery_autonomy:380,charging:'off',charge_state:'charge_ended',plug:'off',plug_state:'unplugged',charging_remaining_time:0});
+    sync();
+  });
+  document.getElementById('simulate-missing').addEventListener('click',()=>{delete hass.states['sensor.tuin_alpine_battery_autonomy'];card.hass=hass;});
+  sync();
+});
+</script></head><body><main><header><h1>Renault Alpine — Home Assistant card preview</h1><span>Test page only (no vehicle commands)</span></header><div class="bar">Scenario: <select id="scenario"><option value="parked">Parked</option><option value="charging">Charging</option><option value="ready">Ready to go</option></select><button id="simulate-missing">Test missing range sensor</button></div>
+<renault-alpine-card id="card"></renault-alpine-card><p>Local preview uses fake Home Assistant states and intercepts the buttons. The installed dashboard card uses actual Home Assistant states and actions.</p><p id="log">Button commands will appear here.</p></main></body></html>
