@@ -1,115 +1,101 @@
-# Renault Alpine — Home Assistant Dashboard Card
+# Renault Alpine Vehicle Card
 
-![Desktop screenshot](docs/preview-desktop.png)
+**A premium vehicle dashboard for Home Assistant.** Monitor your Renault's essential information and access supported remote functions from one elegant, responsive card.
 
-An independent **Dashboard / Lovelace** card that works with Home Assistant's [official Renault integration](https://www.home-assistant.io/integrations/renault). The card presents the car, charging information, lock and HVAC states, charging time remaining, mileage, location and remote-action buttons in a compact Graphite design.
+![Renault Alpine Vehicle Card preview](docs/preview-desktop.png)
 
-**Dashboard card, not an integration.** It creates **no new entities**; the official Renault integration is required. This project has the same HACS-friendly `hacs.json` approach as [iCal Flight Tracker](https://github.com/737oli/Flightradar_HA_App), but must be added to HACS as a **Dashboard**, not an Integration.
+Designed with a graphite finish, clear status indicators, and a layout that feels at home on both desktop and mobile dashboards.
 
-### Screenshots
+## Features
 
-| Desktop | Compact phone layout |
-|:--:|:--:|
-| ![Desktop](docs/preview-desktop.png) | ![Mobile](docs/preview-mobile.png) |
+| Vehicle information | At a glance |
+| --- | --- |
+| **Battery & range** | Current battery percentage, a visual charge bar, and estimated remaining driving range |
+| **Charging** | Charging status, plug connection, and estimated time remaining |
+| **Vehicle status** | Door-lock status, cabin climate status, and recorded mileage |
+| **Location & updates** | Vehicle location and the most recent available update |
 
-## HACS installation (custom repository)
+### Quick actions
 
-> **GitHub repository must be public.** HACS cannot install private GitHub repositories. If this repository is still private, make it public under **GitHub → Settings → General → Danger Zone → Change repository visibility**. Before making it public, remove vehicle-specific names or locations from sample configs if you don't want them published. The code contains no secrets or Renault credentials.
+Control supported Renault functions directly from the card:
 
-1. In Home Assistant, open **HACS / Marketplace** (the label depends on your version).
-2. Open the **⋮** menu, choose **Custom repositories**, and enter:
+- **Climate control** — start or stop cabin air conditioning, where supported.
+- **Charging** — start or stop charging, where supported.
+- **Flash lights** — remotely flash the vehicle lights.
+- **Sound horn** — activate the horn, with a confirmation prompt.
 
+The card automatically disables actions that are unavailable for your vehicle. Lock information is **display-only**; the card does not remotely lock or unlock the vehicle.
+
+## Gallery
+
+| Desktop | Mobile |
+| :---: | :---: |
+| ![Desktop dashboard preview](docs/preview-desktop.png) | ![Mobile dashboard preview](docs/preview-mobile.png) |
+
+## Requirements
+
+- A working **Home Assistant** installation.
+- The official [Renault integration](https://www.home-assistant.io/integrations/renault/) configured with your vehicle.
+- **HACS** installed for easy installation and updates.
+
+Available information and remote actions depend on your Renault model, connected services, and subscription. Not every vehicle supports every feature.
+
+## Install with HACS
+
+1. Open **HACS** in Home Assistant.
+2. Open the **⋮** menu and select **Custom repositories**.
+3. Add this repository:
+   
    ```text
    https://github.com/737oli/renault-alpine-ha-card
    ```
 
-3. Choose repository type **Dashboard** (older installations may say **Lovelace** or **Plugin**), **not Integration**.
-4. Add the repository, open **Renault Alpine Vehicle Card**, and select **Download/Install**.
-5. Allow HACS to register the JavaScript dashboard resource. If your dashboard manages resources via YAML, register the resource manually as a **JavaScript module** at:
+4. Choose **Dashboard** as the category and add the repository.
+5. Open **Renault Alpine Vehicle Card** in HACS and select **Download**.
+6. Refresh your Home Assistant dashboard if the new card is not shown immediately.
 
-   ```text
-   /hacsfiles/renault-alpine-ha-card/renault-alpine-card.js
-   ```
+### Add the card to your dashboard
 
-   The HACS resource URL may have a changing version query (`?v=...`). Keep the version HACS generates when available. If the card doesn't appear immediately, fully reload the browser or app.
-6. Edit your dashboard → **Add card** → search for **Renault Alpine** or choose **Manual** and paste the contents of [`card-config.yaml`](card-config.yaml).
-7. In the card editor, expand **Entity mapping** and select the actual Renault entity IDs from **Settings → Devices & services → Renault → your vehicle**.
+1. Open your dashboard and select **Edit dashboard → Add card**.
+2. Search for **Renault Alpine** and add the card.
+3. Open the card's **visual editor**.
+4. Set the vehicle's entity prefix, then use **Entity mapping** to confirm the correct Renault sensors and action buttons.
+5. Save the card.
 
-No changes to `configuration.yaml` are needed. **Do not separately add a `/local/renault-alpine/...` resource if HACS already installed the card**, or the same custom element may load twice.
+You can find your vehicle's entities under **Settings → Devices & services → Renault → your vehicle**.
 
-### Distribution and artwork
+**No changes to `configuration.yaml` are required.**
 
-The Renault emblem in the top-right is vector-traced directly from the user-supplied logo, drawn white inside the card, and does not need a separate image file. Primary text is explicitly white even under light Home Assistant themes. Flash lights uses the same button style as the other actions without an entity subtitle.
+## Personalize your dashboard
 
-`hacs.json` declares `filename: renault-alpine-card.js`. HACS finds the release-ready files together in `dist/` and installs both:
+The visual editor lets you customize the card without editing files:
 
-- `dist/renault-alpine-card.js` — dependency-free ES module containing the JavaScript, HTML and CSS.
-- `dist/alpine-hero.webp` — the vehicle artwork.
+- Change the card title and location label.
+- Adjust the battery and accent colors.
+- Choose icon styles and compact spacing.
+- Select a different vehicle image if you prefer.
+- Match displayed information and actions to your own Renault entities.
 
-The card resolves `alpine-hero.webp` **relative to its own loaded JavaScript module** via `import.meta.url`. Therefore the image works for HACS and manual installations without editing a path. You can still override the image through the card editor if desired.
+The included vehicle artwork loads automatically. The graphite theme maintains high-contrast text across Home Assistant themes.
 
-### Manual installation (without HACS)
+## Good to know
 
-Copy both files from `dist/` into Home Assistant at `/config/www/renault-alpine/` using **Settings → Apps → File editor** or another file-upload tool:
+**Why do some values show “—”?** The vehicle may not have reported the information yet, or the matching entity may be missing or unavailable. Check the Renault entities in Home Assistant and verify the card's entity mappings.
 
-- `/config/www/renault-alpine/renault-alpine-card.js`
-- `/config/www/renault-alpine/alpine-hero.webp`
+**Why is an action unavailable?** Your model, Renault connected-services package, or Home Assistant integration may not expose that function. Only supported actions can be used.
 
-Add a resource in **Settings → Dashboards → Resources**:
+**Why hasn't the car updated after a command?** Renault cloud updates can be delayed. A command accepted by Home Assistant does not necessarily mean the vehicle has already completed it.
 
-```text
-/local/renault-alpine/renault-alpine-card.js?v=1.1.1
-```
+**Why does the old design still appear?** Check for an update in HACS, then fully refresh your browser or restart the Home Assistant mobile app. If you previously installed the card manually, remove any outdated duplicate dashboard resource after confirming the HACS version works.
 
-Choose **JavaScript module**, then add the same `custom:renault-alpine-card` dashboard card. If the `www` directory was newly created, Home Assistant might require a restart before serving `/local/` files. The UI editor handles all card settings; `configuration.yaml` does not need changing.
+## Updates and support
 
-## Example dashboard card
+Updates are provided through **HACS**. Check the [Releases](https://github.com/737oli/renault-alpine-ha-card/releases) page for changes and new versions.
 
-```yaml
-type: custom:renault-alpine-card
-title: Renault Alpine
-entity_prefix: tuin_alpine
-location_suffix: Tuin
-colors:
-  battery: '#7fea9f'
-  highlight: '#83baff'
-  statusIcons: '#c5e3fd'
-icons:
-  weight: regular
-  time: timer
-  flash: headlights
-options:
-  compact: true
-  confirmHorn: true
-entities:
-  flashLights: button.tuin_alpine_flash_lights
-```
+Found a problem or have an idea? Open an [issue on GitHub](https://github.com/737oli/renault-alpine-ha-card/issues).
 
-The `tuin_alpine` entity prefix, location label and flash button entity are **examples from this project's setup**. Other entity names are automatically proposed from the prefix and must be verified for your car. You can override any field in the card editor. No credentials are stored in the card.
+## License and disclaimer
 
-## Supported information and actions
+Released under the [MIT License](LICENSE).
 
-- **Readings:** Battery, electric range, charging status, plug status, locking status, HVAC, charging time remaining, mileage, location and most recent battery activity.
-- **Commands:** Start A/C, stop A/C (requires Renault vehicle ID), start/stop charging if supported, flash lights, sound horn (with confirmation).
-- **Safety:** Unavailable commands stay disabled; values not supplied by Renault show `—`. Stop A/C requires the official Renault vehicle ID, which you can inspect using the Home Assistant visual action editor (without executing it). The lock tile is **read-only**: for Home Assistant's `lock` binary sensor, `on` is unlocked and `off` is locked.
-- **Refresh:** Renault cloud polling can delay updates. A successful button press means Home Assistant accepted the request, not that the vehicle action has completed.
-
-The only entity ID directly confirmed by the original project is `button.tuin_alpine_flash_lights`. Check other IDs under **Settings → Devices & services → Renault → your vehicle**. Some features require an eligible Renault subscription.
-
-## Updating and development
-
-HACS uses GitHub commit versions until you publish a GitHub release. **No release is required to install a custom repository.** A versioned release can be published later through GitHub Releases, using a tag such as `v1.1.1` (make sure it contains the `dist` files). HACS checks for updates and refreshes the resource version after installation.
-
-The package files are in `dist/`; changes to the dashboard JavaScript must be made there. Open [`preview.html`](preview.html) locally using a development web server to simulate Home Assistant sensor states and actions without touching your car:
-
-```bash
-python3 -m http.server 8000
-# then open http://localhost:8000/preview.html
-node --check dist/renault-alpine-card.js
-```
-
-GitHub Actions checks JavaScript syntax and runs the official HACS repository validator (category `plugin`). Until the repository is public, the HACS validation job and HACS installation may not work, even though the JavaScript syntax check can run.
-
-## Attribution / license
-
-Community-created UI; **not affiliated with Renault, Alpine, or Home Assistant**. Brand names and logos belong to their respective owners. No open-source license has been selected yet. Choose a license before inviting contributions or seeking inclusion in the default HACS catalog.
+This is an independent community project and is **not affiliated with or endorsed by Renault, Alpine, or Home Assistant**. All trademarks and brand assets belong to their respective owners. Remote vehicle actions should not be relied upon for safety-critical situations.
